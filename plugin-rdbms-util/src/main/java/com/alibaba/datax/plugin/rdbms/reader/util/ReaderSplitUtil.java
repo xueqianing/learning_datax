@@ -19,6 +19,9 @@ public final class ReaderSplitUtil {
 
     public static List<Configuration> doSplit(
             Configuration originalSliceConfig, int adviceNumber) {
+        /**
+         *  默认isTableMode是true
+         */
         boolean isTableMode = originalSliceConfig.getBool(Constant.IS_TABLE_MODE).booleanValue();
         int eachTableShouldSplittedNumber = -1;
         if (isTableMode) {
@@ -27,10 +30,11 @@ public final class ReaderSplitUtil {
             eachTableShouldSplittedNumber = calculateEachTableShouldSplittedNumber(
                     adviceNumber, originalSliceConfig.getInt(Constant.TABLE_NUMBER_MARK));
         }
-
+        //从配置文件获取列信息
         String column = originalSliceConfig.getString(Key.COLUMN);
+        //从配置文件获取where设置，如果配置文件没有指定就是空
         String where = originalSliceConfig.getString(Key.WHERE, null);
-
+        //数据库连接信息,这里仅指reader的连接信息
         List<Object> conns = originalSliceConfig.getList(Constant.CONN_MARK, Object.class);
 
         List<Configuration> splittedConfigs = new ArrayList<Configuration>();
